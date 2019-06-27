@@ -1,0 +1,556 @@
+<HTML>
+	
+	<HEAD>
+		<TITLE>Checkers</TITLE>
+		
+			<!--------------------
+		Name:		Majuth Kirakalaprathapan
+		Date:		June, 15, 2017
+		Course:		ICS3U
+		Teacher:	Mrs.Abram
+		Title:		Checkers culminating assignment
+		Description:Program that lets you play checkers against the computer's AI, follows similar rules
+					with the exception of the king function not being available, consult the user guide
+					on how to play the gamea and changes that are made.
+		
+		--------------------->
+		
+		<SCRIPT language="javascript">
+		var playerTurn = true
+		var blackCheckerOut = 0
+		var redCheckerOut = 0
+		var click = 0
+		var spotOne = ""
+		var spotTwo = ""
+		var compEliminateTry = 0
+		var randRedPiece
+		var computerTurn = 1
+		var playerName
+		var compLoopRuns = 0
+		
+		//display user function
+		function turnDisplay(){
+			if (playerTurn == true){
+				turnTracker.turnOutput.value = playerName + "\'s turn"
+			}
+			else{
+				turnTracker.turnOutput.value = "Computer's turn"
+			}
+		}
+		
+		//main function that runs when user clicks piece
+		function spotChoice(spot){
+			
+			if(playerTurn == true){
+				turnDisplay()
+				
+			
+					if(click == 0){
+						//store first clicked spot and highlight the piece
+						if(document.images[spot + 1].src == redSource){
+						spotOne = spot
+						document.images[spot + 1].src = "pics/redCheckerHighlight.png"
+						click++
+						var redHighlightSource = document.images[spot + 1].src
+						}
+						else{
+						alert("Wrong Spot")
+						}
+					}
+					else if((click == 1) && (spot == spotOne)){
+						//test to see if user wants to unclick piece
+						click = 0
+						document.images[spot + 1].src = "pics/redChecker.png"
+					}
+					else{
+						spotTwo = spot
+						// conditional statements test that pieces are moved up to rightmost or lefftmost spot
+						if((((spotTwo == spotOne - 3)||(spotTwo == spotOne - 4))&& (spotOne == 9||spotOne == 10||spotOne == 11||spotOne == 12||spotOne == 17||spotOne == 18||spotOne == 19|| spotOne == 20|| spotOne == 25|| spotOne == 26|| spotOne == 27|| spotOne == 28 ))||
+							(((spotTwo == spotOne - 4)||(spotTwo == spotOne - 5))&& (spotOne == 5||spotOne == 6||spotOne == 7||spotOne == 8||spotOne == 13||spotOne == 14||spotOne == 15||spotOne == 16||spotOne == 21||spotOne == 22||spotOne == 23||spotOne == 24||spotOne == 29|| spotOne == 30||spotOne == 31||spotOne == 32 ))
+						)
+							{
+							if(document.images[spot + 1].src == blank){
+							document.images[spotOne + 1].src = "pics/blank.png"
+							document.images[spotTwo + 1].src = "pics/redChecker.png"
+							click = 0
+							playerTurn = false
+							}
+							else{
+							alert("Wrong Spot")
+							}
+						}
+						else if ((spotTwo == spotOne - 9)&&(document.images[spotOne - 4 + 1].src == blackSource)&&(spotOne == 9||spotOne == 10||spotOne == 11||spotOne == 12||spotOne == 17||spotOne == 18||spotOne == 19|| spotOne == 20|| spotOne == 25|| spotOne == 26|| spotOne == 27|| spotOne == 28 )){
+							//eliminate pieces, if start row is close to right side, diagonally left upwards 
+							if(document.images[spot + 1].src == blank){
+							document.images[spotOne + 1].src = "pics/blank.png"
+							document.images[spotTwo + 1].src = "pics/redChecker.png"
+							document.images[spotOne - 4 + 1].src = "pics/blank.png"
+							blackCheckerOut += 1
+							turnTracker.blackOuts.value = blackCheckerOut
+							
+							click = 0
+							playerTurn = false
+							}
+							else{
+							alert("Wrong Spot")
+							}
+							
+						}
+						else if ((spotTwo == spotOne - 7)&&(document.images[spotOne - 3 + 1].src == blackSource)&&(spotOne == 9||spotOne == 10||spotOne == 11||spotOne == 12||spotOne == 17||spotOne == 18||spotOne == 19|| spotOne == 20|| spotOne == 25|| spotOne == 26|| spotOne == 27|| spotOne == 28 )){
+							//eliminate pieces, if start row is close to right side, diagonally right upwards 
+							if(document.images[spot + 1].src == blank){
+							document.images[spotOne + 1].src = "pics/blank.png"
+							document.images[spotTwo + 1].src = "pics/redChecker.png"
+							document.images[spotOne - 3 + 1].src = "pics/blank.png"
+							blackCheckerOut += 1
+							turnTracker.blackOuts.value = blackCheckerOut
+							
+							click = 0
+							playerTurn = false
+							}
+							else{
+							alert("Wrong Spot")
+							}
+							
+						}
+						else if ((spotTwo == spotOne - 9)&&(document.images[spotOne - 5 + 1].src == blackSource)&&(spotOne == 5||spotOne == 6||spotOne == 7||spotOne == 8||spotOne == 13||spotOne == 14||spotOne == 15||spotOne == 16||spotOne == 21||spotOne == 22||spotOne == 23||spotOne == 24||spotOne == 29|| spotOne == 30||spotOne == 31||spotOne == 32 )){
+							//eliminate pieces, if start row is close to left side, diagonally left upwards 
+							if(document.images[spot + 1].src == blank){
+							document.images[spotOne + 1].src = "pics/blank.png"
+							document.images[spotTwo + 1].src = "pics/redChecker.png"
+							document.images[spotOne - 5 + 1].src = "pics/blank.png"
+							blackCheckerOut += 1
+							turnTracker.blackOuts.value = blackCheckerOut
+							
+							click = 0
+							playerTurn = false
+							}
+							else{
+							alert("Wrong Spot")
+							}
+							
+						}
+						else if ((spotTwo == spotOne - 7)&&(document.images[spotOne - 4 + 1].src == blackSource)&&(spotOne == 5||spotOne == 6||spotOne == 7||spotOne == 8||spotOne == 13||spotOne == 14||spotOne == 15||spotOne == 16||spotOne == 21||spotOne == 22||spotOne == 23||spotOne == 24||spotOne == 29|| spotOne == 30||spotOne == 31||spotOne == 32 )){
+							//eliminate pieces, if start row is close to left side, diagonally right upwards 
+							if(document.images[spot + 1].src == blank){
+							document.images[spotOne + 1].src = "pics/blank.png"
+							document.images[spotTwo + 1].src = "pics/redChecker.png"
+							document.images[spotOne - 4 + 1].src = "pics/blank.png"
+							blackCheckerOut += 1
+							turnTracker.blackOuts.value = blackCheckerOut
+							
+							click = 0
+							playerTurn = false
+							}
+							else{
+							alert("Wrong Spot")
+							}
+							
+						}
+						else{
+						alert("Cannot move there")
+						}
+					}
+			}
+			else{
+				alert("Computers turn please wait")
+			}
+		
+			if(playerTurn == false){
+				turnDisplay()
+				//code for computer AI
+				if(computerTurn == 1){
+					//first turn move to a spot that isnt going to get comp. piece eliminated
+					var choices = new Array (13,14,15,16)
+					
+					for(var i = 0; i <=3; i++){
+						if ((spotTwo == choices[i] + 3) || (spotTwo == choices[i] + 4)){
+							choices[i] = "bad option"
+						}
+						else{
+						}
+					}
+					
+					var compTakeTurn = "Not Set"
+					
+					while((compTakeTurn == "bad option") || (compTakeTurn == "Not Set") ){
+					
+					var randNum = Math.floor(Math.random() * 3)
+					compTakeTurn = choices[randNum]
+					}
+					
+					document.images[compTakeTurn + 1].src = "pics/blackChecker.png"
+					document.images[compTakeTurn + 1 - 4].src = "pics/blank.png"
+					
+				}
+				else if(computerTurn >= 2){
+				
+					//computer AI code to eliminate pieces
+					while(compEliminateTry != 30){
+						randRedPiece = Math.floor(Math.random() * 27) + 1
+						
+						//if statments use to check row and corresponding movements that are allowed
+						if ((document.images[randRedPiece + 1].src == redSource)&&
+						(randRedPiece == 6||randRedPiece == 7||randRedPiece == 8||randRedPiece == 14||randRedPiece == 15||randRedPiece == 16||randRedPiece == 22||randRedPiece == 23||randRedPiece == 24|| randRedPiece == 30||randRedPiece == 31||randRedPiece == 32)&&
+						(document.images[randRedPiece - 5 + 1].src == blackSource)&&
+						(document.images[randRedPiece + 4 + 1].src == blank)){
+						
+							//code for second row and every row after, eliminate from top left to bottom right
+							document.images[randRedPiece - 5 + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 4 + 1].src = "pics/blackChecker.png"
+							redCheckerOut += 1
+							turnTracker.redOuts.value = redCheckerOut
+							compEliminateTry = 29
+							playerTurn = true
+						}
+						else if ((document.images[randRedPiece + 1].src == redSource)&&
+						(randRedPiece == 6||randRedPiece == 7||randRedPiece == 8||randRedPiece == 14||randRedPiece == 15||randRedPiece == 16||randRedPiece == 22||randRedPiece == 23||randRedPiece == 24|| randRedPiece == 30||randRedPiece == 31||randRedPiece == 32)&&
+						(document.images[randRedPiece - 4 + 1].src == blackSource)&&
+						(document.images[randRedPiece + 3 + 1].src == blank)){
+						
+							//code for second row and every row after, eliminate from top right to bottom left
+							document.images[randRedPiece - 4 + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 3 + 1].src = "pics/blackChecker.png"
+							redCheckerOut += 1
+							turnTracker.redOuts.value = redCheckerOut
+							compEliminateTry = 29
+							playerTurn = true
+						}
+						else if ((document.images[randRedPiece + 1].src == redSource)&&
+						(randRedPiece == 9||randRedPiece == 10||randRedPiece == 11||randRedPiece == 17||randRedPiece == 18||randRedPiece == 19||  randRedPiece == 25|| randRedPiece == 26|| randRedPiece == 27)&&
+						(document.images[randRedPiece - 4 + 1].src == blackSource)&&
+						(document.images[randRedPiece + 5 + 1].src == blank)){
+						
+							//code for third row and every row after, eliminate from top left to bottom right
+							document.images[randRedPiece - 4 + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 5 + 1].src = "pics/blackChecker.png"
+							redCheckerOut += 1
+							turnTracker.redOuts.value = redCheckerOut
+							compEliminateTry = 29
+							playerTurn = true
+						}
+						else if ((document.images[randRedPiece + 1].src == redSource)&&
+						(randRedPiece == 9||randRedPiece == 10||randRedPiece == 11||randRedPiece == 17||randRedPiece == 18||randRedPiece == 19||  randRedPiece == 25|| randRedPiece == 26|| randRedPiece == 27)&&
+						(document.images[randRedPiece - 3 + 1].src == blackSource)&&
+						(document.images[randRedPiece + 4 + 1].src == blank)){
+						
+							//code for third row and every row after, eliminate from top right to bottom left
+							document.images[randRedPiece - 3 + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 1].src = "pics/blank.png"
+							document.images[randRedPiece + 4 + 1].src = "pics/blackChecker.png"
+							redCheckerOut += 1
+							turnTracker.redOuts.value = redCheckerOut
+							compEliminateTry = 29
+							playerTurn = true
+						}
+						else{
+						}
+					
+					compEliminateTry++
+					}
+					
+					compEliminateTry = 0
+				
+				}
+				else{
+				}
+			}
+			
+			if(playerTurn == false){
+			
+					//computer randomized movement, used after first turn
+					var randPiece = Math.floor(Math.random() * 27) + 1
+					
+					while(randPiece != 999){
+						
+						//Check if computer can't move anymore and ouput winner
+						if(compLoopRuns == 500){
+							if(redCheckerOut > blackCheckerOut){
+								alert("Game over computer won")
+							}
+							else if (redCheckerOut < blackCheckerOut){
+								alert("Game over " + playerName +" won")
+							}
+							else{
+								alert("Game over, It's a draw")
+							}
+							
+						}
+						else{
+						}
+					
+						randPiece = Math.floor(Math.random() * 27) + 1
+						
+						//check source is blank & corresponding spot is blank
+						if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 1||randPiece == 2||randPiece == 3||randPiece == 9||randPiece == 10||randPiece == 11||randPiece == 17||randPiece == 18||randPiece == 19||  randPiece == 25|| randPiece == 26|| randPiece == 27)&&
+						(document.images[randPiece + 1 + 4].src == blank)){
+						
+							//code for top row and every other row after, for moving down-left
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 4].src = "pics/blackChecker.png"
+							randPiece = 999
+
+						}
+						else if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 1||randPiece == 2||randPiece == 3||randPiece == 9||randPiece == 10||randPiece == 11||randPiece == 17||randPiece == 18||randPiece == 19||  randPiece == 25|| randPiece == 26|| randPiece == 27)&&
+						(document.images[randPiece + 1 + 5].src == blank)){
+							
+							//code for top row and every other row after, for moving down-right
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 5].src = "pics/blackChecker.png"
+							randPiece = 999
+
+						}
+						else if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 6||randPiece == 7||randPiece == 8||randPiece == 14||randPiece == 15||randPiece == 16||randPiece == 22||randPiece == 23||randPiece == 24|| randPiece == 30||randPiece == 31||randPiece == 32)&&
+						(document.images[randPiece + 1 + 3].src == blank)){
+							
+							//code for second row and every other row after, for moving down-left
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 3].src = "pics/blackChecker.png"
+							randPiece = 999
+
+						}
+						else if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 6||randPiece == 7||randPiece == 8||randPiece == 14||randPiece == 15||randPiece == 16||randPiece == 22||randPiece == 23||randPiece == 24|randPiece == 30||randPiece == 31||randPiece == 32)&&
+						(document.images[randPiece + 1 + 4].src == blank)){
+						
+							//code for second row and every other row after, for moving down-left
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 4].src = "pics/blackChecker.png"
+							randPiece = 999
+
+						}
+						
+						else if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 5||randPiece == 13||randPiece == 21||randPiece == 29)&&
+						(document.images[randPiece + 1 + 4].src == blank)){
+							
+							//code for left side pieces
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 4].src = "pics/blackChecker.png"
+							randPiece = 999
+						}
+						else if ((document.images[randPiece + 1].src == blackSource)&&
+						(randPiece == 4||randPiece == 12||randPiece == 20|| randPiece == 28)&&
+						(document.images[randPiece + 1 + 4].src == blank)){
+							
+							//code for right side pieces
+							document.images[randPiece + 1].src = "pics/blank.png"
+							document.images[randPiece + 1 + 4].src = "pics/blackChecker.png"
+							randPiece = 999
+						}
+						else{
+						compLoopRuns++
+						}
+					
+					}
+					compLoopRuns = 0
+			}
+			else{
+			}
+				
+				
+				
+			//Check if someone is eliminated completely
+			if(redCheckerOut == 12){
+				alert("Game over computer won")
+			}
+			else if(blackCheckerOut == 12){
+				alert("Game over " + playerName +" won")
+			}
+			else{
+			}
+				
+			//Check if player can't go anymore
+			var redPiecesInPlay = 0
+			for(var i = 5; i <= 32; i++){
+				if((document.images[i + 1].src == redSource) || (document.images[i + 1].src == redHighlightSource)){
+					redPiecesInPlay +=1
+				}
+				else{
+				}
+			}
+			
+			//if player can't move output winner
+			if (redPiecesInPlay == 0){
+			
+				if(redCheckerOut > blackCheckerOut){
+					alert("Game over computer won")
+				}
+				else if (redCheckerOut < blackCheckerOut){
+					alert("Game over " + playerName +" won")
+				}
+				else{
+					alert("Game over, It's a draw")
+				}
+			
+			}
+			else{
+				redPiecesInPlay = 0
+			}
+			
+			
+				
+			computerTurn++
+			playerTurn = true
+			turnDisplay()
+		}
+			
+		
+		</SCRIPT>
+	</HEAD>
+	
+	<BODY BGCOLOR="black">
+		<!--- Text and input at top--->
+		<CENTER> <FONT COLOR="white" FACE="Verdana" SIZE="+4"> Checkers </FONT> </CENTER>
+		
+		<FORM name="turnTracker">
+			<CENTER>
+				<FONT COLOR="white" FACE="Verdana" SIZE="+2">  Name:<INPUT  type="text" name="userName"> </FONT>
+				<P>
+				
+				<INPUT type="button" Value="Start" size="12" onClick="
+					//Code to start the game
+					playerName = turnTracker.userName.value
+					turnDisplay()
+					
+				">
+				
+				<P>
+				<INPUT  type="text" name="turnOutput" size="30">
+			</CENTER>
+			
+			
+			<CENTER>
+			<TABLE>
+			
+			<TR>
+				<TD>
+					<!--- Table at side that contains the images for pieces eliminated--->
+					<TABLE WIDTH="150" ALIGN="left" BORDER="0" HEIGHT="730" BGCOLOR="black">		
+					<TR>
+						<TD BGCOLOR="black"><CENTER>
+						
+						<IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle">
+						<P>
+						<INPUT type="text" name="blackOuts" size="1" value="0">
+						
+						</CENTER></TD>
+					</TR>
+					<TR>
+						<TD BGCOLOR="black"><CENTER>
+						
+						<INPUT type="text" name="redOuts" size="1" value="0">
+						<P>
+						<IMG SRC="pics/redChecker.png" WIDTH="76px" ALIGN="middle">
+						
+						</CENTER></TD>
+					</TR>
+					</TABLE>
+				
+						<!--- Checkers gameboard--->
+					<TABLE WIDTH="700" ALIGN="right" BORDER="0" HEIGHT="730" BACKGROUND="pics/wood.jpg" CELLSPACING="0">
+					<TR height="87.5px">
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(1)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(2)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(3)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(4)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(5)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(6)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(7)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(8)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(9)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(10)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(11)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(12)"> <IMG SRC="pics/blackChecker.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(13)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(14)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(15)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(16)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(17)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(18)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(19)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(20)"> <IMG SRC="pics/blank.png" WIDTH="76px" ALIGN="middle"></A></CENTER></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(21)"><IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(22)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(23)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(24)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(25)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(26)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(27)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(28)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+					</TR>
+					<TR height="87.5px">
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(29)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(30)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(31)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+						<TD BACKGROUND="pics/blackSquare.png" width="87.5px"><CENTER><A onClick="spotChoice(32)"> <IMG SRC="pics/redChecker.png" WIDTH="75px" ALIGN="middle"></A></CENTER></TD>
+						<TD width="87.5px"></TD>
+					</TR>
+
+			</TABLE>
+			
+		</TD>
+		</TR>
+		</TABLE>
+		
+	</FORM>
+	
+	<SCRIPT language="javascript">
+		var blackSource = document.images[0].src
+		var redSource = document.images[1].src
+		var blank = document.images[17].src
+	</SCRIPT>
+	
+	</CENTER>
+	
+</BODY>
+</HTML>
